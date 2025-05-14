@@ -1,0 +1,99 @@
+TP4 GRP2 : MP Site Web Full Stack Multilingue
+
+
+Sujet de TP – Mini Bookstore avec Spring Boot
+
+Objectif global :
+Développer une mini application web avec *Spring Boot* simulant une librairie en ligne, avec les fonctionnalités suivantes :
+Inscription et connexion utilisateur
+Parcours client : ajout de livres au panier, passage de commande
+Version simple (sans interface graphique avancée)
+Version avancée avec *Thymeleaf*, *i18n* (internationalisation) et *base de données H2*
+Deux langues supportées : 🇫🇷 Français et 🇬🇧 Anglais
+---
+Partie 1 – Version Simple (sans Thymeleaf)
+
+Technologies utilisées :
+Spring Boot
+Spring MVC
+Spring Security (login simple)
+Stockage en mémoire (List / Map)
+✅ Fonctionnalités à développer :
+1. *Inscription utilisateur*
+Formulaire simple avec nom, email, mot de passe
+Stockage des utilisateurs en mémoire
+2. *Authentification*
+Utilisation de Spring Security
+Protection de certaines pages
+3. *Affichage d’une liste de livres*
+Liste statique de livres (titre, auteur, prix)
+4. *Ajout de livres au panier*
+Stockage du panier dans la session
+
+5. *Visualisation du panier*
+Liste des livres ajoutés
+Affichage du total
+6. *Passage de commande*
+Validation simple de la commande (sans paiement)
+Affichage d’un message de confirmation
+7. *Déconnexion*
+Gestion de session utilisateur
+
+
+Partie 2 – Version Avancée (avec Thymeleaf + H2 + Internationalisation)
+
+🧰 Technologies supplémentaires :
+Thymeleaf (pour les templates HTML)
+Bootstrap (pour un style léger)
+H2 Database (en mémoire)
+`data.sql` pour pré-remplir des données
+`messages_fr.properties` / `messages_en.properties` pour l’i18n
+✅ Nouvelles fonctionnalités et améliorations :
+1. *Interface utilisateur avec Thymeleaf*
+Templates : `signup.html`, `login.html`, `books.html`, `cart.html`, `order.html`
+Fragments : `header.html`, `footer.html`
+2. *Base de données H2*
+Sauvegarde des utilisateurs, livres et commandes
+Utilisation de JPA ou JdbcTemplate
+Données de test via `data.sql`
+3. *Internationalisation*
+Deux fichiers de messages (FR / EN)
+Sélecteur de langue sur le site (optionnel)
+Traduction des titres, boutons, textes
+4. *Gestion dynamique du panier et commandes*
+Panier lié à la session utilisateur
+Résumé de commande avec tous les détails
+5. *Console H2 activée*
+Accès à : `http://localhost:8080/h2-console`
+JDBC URL : `jdbc:h2:mem:testdb`
+Utilisateur : `sa`, mot de passe : (vide)
+---
+
+📁 Structure suggérée du projet
+
+```
+src/
+└── main/
+├── java/com/example/bookstore/
+│ ├── controllers/
+│ ├── services/
+│ ├── models/
+│ └── config/
+└── resources/
+├── templates/
+│ ├── signup.html
+│ ├── login.html
+│ ├── books.html
+│ ├── cart.html
+│ ├── order.html
+│ └── fragments/
+│ ├── header.html
+│ └── footer.html
+├── static/ (CSS/JS)
+├── application.properties
+├── data.sql
+├── messages_fr.properties
+└── messages_en.properties
+```
+
+---

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="fragments/header :: head"></th:block>
+</head>
+<body>
+    <div th:replace="fragments/header :: header"></div>
+    
+    <div class="container py-5">
+        <h1 class="mb-4" th:text="#{checkout.title}">Checkout</h1>
+        
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 th:text="#{checkout.summary}">Order Summary</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th th:text="#{cart.book}">Book</th>
+                                        <th th:text="#{cart.price}">Price</th>
+                                        <th th:text="#{cart.quantity}">Quantity</th>
+                                        <th th:text="#{cart.subtotal}">Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="item : ${cartItems}">
+                                        <td th:text="${item.book.title}">Book Title</td>
+                                        <td th:text="${#numbers.formatCurrency(item.book.price)}">$10.99</td>
+                                        <td th:text="${item.quantity}">2</td>
+                                        <td th:text="${#numbers.formatCurrency(item.subtotal)}">$21.98</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="3" class="text-end fw-bold" th:text="#{cart.total}">Total:</td>
+                                        <td th:text="${#numbers.formatCurrency(total)}" class="fw-bold">$43.96</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <form th:action="@{/order/create}" method="post">
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-success btn-lg" th:text="#{checkout.confirm}">Confirm Order</button>
+                                <a th:href="@{/cart}" class="btn btn-outline-secondary" th:text="#{checkout.back}">Back to Cart</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

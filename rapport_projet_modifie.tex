@@ -1,0 +1,474 @@
+\documentclass[12pt,a4paper]{report}
+
+% Packages nécessaires
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tcolorbox}
+
+% Configuration de la géométrie de la page
+\geometry{margin=2.5cm}
+
+% Configuration des liens hypertexte
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={Rapport de Projet - Mini Librairie en Ligne},
+    pdfauthor={Votre Nom},
+    pdfsubject={Développement Java avec Spring Boot},
+    pdfkeywords={Java, Spring Boot, Web, MVC, JPA, Thymeleaf}
+}
+
+% Configuration des listings de code
+\lstset{
+    language=Java,
+    backgroundcolor=\color{gray!10},
+    basicstyle=\footnotesize\ttfamily,
+    keywordstyle=\color{blue}\bfseries,
+    stringstyle=\color{red},
+    commentstyle=\color{green!50!black},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,
+    numbersep=8pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    frame=single,
+    tabsize=2,
+    captionpos=b,
+    breaklines=true,
+    breakatwhitespace=false,
+    title=\lstname,
+    escapeinside={\%*}{*)},
+    morekeywords={@Autowired, @Controller, @Service, @Repository, @Entity, @Table}
+}
+
+% Configuration des en-têtes et pieds de page
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Mini Librairie en Ligne}
+\fancyhead[R]{\thepage}
+\fancyfoot[C]{\textcopyright\ 2025 - Projet Java Spring Boot}
+
+% Configuration des titres
+\titleformat{\chapter}[display]
+{\normalfont\huge\bfseries}{\chaptertitlename\ \thechapter}{20pt}{\Huge}
+\titlespacing*{\chapter}{0pt}{50pt}{40pt}
+
+% Début du document
+\begin{document}
+
+% Page de titre
+\begin{titlepage}
+    \centering
+    \includegraphics[width=0.5\textwidth]{logo_c.png}\par\vspace{1cm}
+    {\scshape\LARGE \href{https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&ved=2ahUKEwiChcK23qKNAxUHZqQEHdU-K0kQFnoECEMQAQ&url=https\%3A\%2F\%2Finsat.rnu.tn\%2F&usg=AOvVaw09lB5l98twWkThPEWAZGVk&opi=89978449}{Institut National des Sciences Appliquées et de Technologie}  \par}
+    \vspace{1.5cm}
+    {\huge\bfseries Rapport de Projet:\par}
+    {\huge Mini Librairie en Ligne\par}
+    \vspace{2cm}
+    {\Large\itshape Développé avec Java Spring Boot\par}
+    \vfill
+    {\Large Présenté par:\par}
+    {\large Moahmed Omar Sagga\par}
+    {\large Haythem Krid\par}
+    {\large Joumana Fradi\par}
+    \vspace{0.5cm}}
+    {\large Cours: Java EE\par}
+    {\large Professeur: Saloua Ben Yahya\par}
+    \vspace{1cm}
+\end{titlepage}
+
+% Table des matières
+\tableofcontents
+\newpage
+
+% Liste des figures
+\listoffigures
+\newpage
+
+% Liste des tableaux
+\listoftables
+\newpage
+
+% Introduction
+\chapter{Introduction}
+
+\section{Contexte du Projet}
+Ce rapport présente le développement d'une application web de mini librairie en ligne, conçue pour permettre aux utilisateurs de parcourir un catalogue de livres, de les ajouter à un panier et de passer des commandes. L'application a été développée en utilisant le framework Spring Boot, qui offre une architecture robuste pour le développement d'applications Java.
+
+\section{Objectifs du Projet}
+Les principaux objectifs de ce projet étaient:
+\begin{itemize}
+    \item Créer une application web fonctionnelle avec une interface utilisateur intuitive
+    \item Implémenter un système d'authentification sécurisé
+    \item Permettre aux utilisateurs de parcourir et rechercher des livres
+    \item Gérer un panier d'achat avec possibilité d'ajout, de modification et de suppression d'articles
+    \item Traiter les commandes et afficher l'historique des commandes pour chaque utilisateur
+    \item Implémenter l'internationalisation pour supporter plusieurs langues (français et anglais)
+    \item Assurer une expérience utilisateur moderne et responsive
+\end{itemize}
+
+\section{Technologies Utilisées}
+Le projet a été développé en utilisant les technologies suivantes:
+\begin{itemize}
+    \item Java 11 - Langage de programmation principal
+    \item Spring Boot 2.7 - Framework pour le développement d'applications Java
+    \item Spring Security - Pour l'authentification et l'autorisation
+    \item Spring Data JPA - Pour la persistance des données
+    \item Thymeleaf - Moteur de template pour les vues
+    \item H2 Database - Base de données en mémoire pour le développement
+    \item Bootstrap 5 - Framework CSS pour le design responsive
+    \item HTML5/CSS3 - Pour la structure et le style des pages web
+    \item Maven - Outil de gestion de dépendances et de build
+\end{itemize}
+
+% Architecture du Projet
+\chapter{Architecture du Projet}
+
+\section{Structure du Projet}
+Le projet suit l'architecture MVC (Modèle-Vue-Contrôleur) de Spring Boot, avec une organisation claire des packages:
+
+\begin{tcolorbox}[colback=gray!5,colframe=gray!75!black,title=Structure des Packages]
+\begin{verbatim}
+com.example.bookstore
+  ├── config          # Configuration Spring (sécurité, internationalisation)
+  ├── controllers    # Contrôleurs pour gérer les requêtes HTTP
+  ├── models         # Entités JPA représentant les données
+  ├── repositories   # Interfaces de persistance des données
+  ├── services       # Logique métier de l'application
+  └── BookstoreApplication.java  # Point d'entrée de l'application
+
+resources
+  ├── static         # Ressources statiques (CSS, JS, images)
+  ├── templates      # Templates Thymeleaf
+  └── application.properties  # Configuration de l'application
+\end{verbatim}
+\end{tcolorbox}
+
+\section{Flux de l'Application}
+Le flux principal de l'application suit les étapes suivantes:
+
+\begin{enumerate}
+    \item L'utilisateur s'inscrit ou se connecte à l'application
+    \item L'utilisateur parcourt le catalogue de livres
+    \item L'utilisateur ajoute des livres à son panier
+    \item L'utilisateur consulte son panier et ajuste les quantités si nécessaire
+    \item L'utilisateur passe à la caisse et confirme sa commande
+    \item L'utilisateur peut consulter l'historique de ses commandes
+\end{enumerate}
+
+% Fonctionnalités Implémentées
+\chapter{Fonctionnalités Implémentées}
+
+\section{Authentification et Autorisation}
+L'application utilise Spring Security pour gérer l'authentification et l'autorisation des utilisateurs. Les fonctionnalités implémentées comprennent:
+
+\begin{itemize}
+    \item Inscription des utilisateurs avec validation des données
+    \item Connexion sécurisée avec hachage des mots de passe (BCrypt)
+    \item Protection des routes sensibles (panier, commandes)
+    \item Gestion des sessions utilisateur
+\end{itemize}
+
+\begin{lstlisting}[caption=Configuration de la sécurité avec Spring Security]
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+    private final CustomUserDetailsService userDetailsService;
+    
+    public SecurityConfig(CustomUserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf().disable()
+            .headers().frameOptions().disable().and()
+            .authorizeRequests()
+                .antMatchers("/", "/signup", "/books", "/css/**", "/js/**", "/images/**", "/h2-console/**").permitAll()
+                .anyRequest().authenticated()
+                .and()
+            .formLogin()
+                .loginPage("/login")
+                .defaultSuccessUrl("/books")
+                .permitAll()
+                .and()
+            .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login?logout")
+                .permitAll();
+        
+        return http.build();
+    }
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
+    }
+    
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+}
+\end{lstlisting}
+
+\section{Catalogue de Livres}
+Le catalogue de livres permet aux utilisateurs de parcourir et rechercher des livres. Les fonctionnalités incluent:
+
+\begin{itemize}
+    \item Affichage de tous les livres disponibles
+    \item Recherche de livres par titre ou auteur
+    \item Affichage des détails d'un livre (titre, auteur, description, prix)
+    \item Ajout d'un livre au panier (pour les utilisateurs connectés)
+\end{itemize}
+
+\section{Gestion du Panier}
+Le système de panier permet aux utilisateurs de gérer leurs articles avant de passer commande:
+
+\begin{itemize}
+    \item Ajout d'articles au panier avec sélection de la quantité
+    \item Modification de la quantité des articles dans le panier
+    \item Suppression d'articles du panier
+    \item Calcul automatique du sous-total et du total
+    \item Vidage complet du panier
+\end{itemize}
+
+\section{Gestion des Commandes}
+Le système de commandes permet aux utilisateurs de finaliser leurs achats et de consulter leur historique:
+
+\begin{itemize}
+    \item Passage d'une commande à partir du panier
+    \item Affichage d'une confirmation de commande
+    \item Consultation de l'historique des commandes
+    \item Affichage des détails d'une commande spécifique
+\end{itemize}
+
+\section{Internationalisation}
+L'application supporte plusieurs langues grâce à l'internationalisation:
+
+\begin{itemize}
+    \item Support du français et de l'anglais
+    \item Sélecteur de langue dans l'interface utilisateur
+    \item Traduction de tous les textes de l'interface
+    \item Persistance de la préférence de langue via des cookies
+\end{itemize}
+
+\begin{lstlisting}[caption=Configuration de l'internationalisation]
+# Configuration des messages pour l'internationalisation
+spring.messages.basename=messages
+spring.messages.encoding=UTF-8
+spring.messages.fallback-to-system-locale=false
+spring.messages.cache-duration=3600
+\end{lstlisting}
+
+% Interface Utilisateur
+\chapter{Interface Utilisateur}
+
+\section{Design et Expérience Utilisateur}
+L'interface utilisateur a été conçue pour être intuitive, moderne et responsive. Les principes suivants ont été appliqués:
+
+\begin{itemize}
+    \item Design responsive s'adaptant à tous les appareils (ordinateurs, tablettes, smartphones)
+    \item Utilisation de Bootstrap 5 pour une mise en page cohérente
+    \item Palette de couleurs harmonieuse et professionnelle
+    \item Typographie soignée pour une meilleure lisibilité
+    \item Animations subtiles pour améliorer l'expérience utilisateur
+    \item Feedback visuel pour les actions de l'utilisateur
+\end{itemize}
+
+\section{Pages Principales}
+L'application comprend les pages principales suivantes:
+
+\begin{itemize}
+    \item Page d'accueil - Présentation de l'application
+    \item Catalogue de livres - Affichage et recherche de livres
+    \item Détails d'un livre - Informations détaillées sur un livre
+    \item Panier - Gestion des articles avant achat
+    \item Finalisation de commande - Confirmation avant achat
+    \item Confirmation de commande - Récapitulatif après achat
+    \item Historique des commandes - Liste des commandes passées
+    \item Détails d'une commande - Informations sur une commande spécifique
+    \item Inscription et connexion - Gestion de l'authentification
+\end{itemize}
+
+\section{Composants Réutilisables}
+Pour maintenir une cohérence visuelle et faciliter la maintenance, plusieurs composants réutilisables ont été créés avec Thymeleaf:
+
+\begin{itemize}
+    \item Header - Barre de navigation avec menu et sélecteur de langue
+    \item Footer - Pied de page avec informations de contact et liens rapides
+    \item Carte de livre - Affichage standardisé des informations d'un livre
+    \item Messages d'alerte - Affichage cohérent des messages de succès, d'erreur ou d'information
+\end{itemize}
+
+\begin{lstlisting}[language=HTML, caption=Fragment Thymeleaf pour le header]
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+    <header th:fragment="header">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="" th:href="@{/}" th:text="#{app.title}">Mini Bookstore</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="" th:href="@{/books}">
+                                <i class="bi bi-book"></i> <span th:text="#{nav.books}">Livres</span>
+                            </a>
+                        </li>
+                        <!-- Autres liens de navigation -->
+                    </ul>
+                    <!-- Sélecteur de langue et liens d'authentification -->
+                </div>
+            </div>
+        </nav>
+    </header>
+</body>
+</html>
+\end{lstlisting}
+
+% Défis et Solutions
+\chapter{Défis et Solutions}
+
+\section{Gestion de l'Authentification}
+\textbf{Défi:} Implémenter un système d'authentification sécurisé tout en maintenant une bonne expérience utilisateur.
+
+\textbf{Solution:} Utilisation de Spring Security avec un CustomUserDetailsService pour charger les utilisateurs depuis la base de données. Mise en place d'un encodage des mots de passe avec BCrypt et configuration des règles d'autorisation pour protéger les routes sensibles.
+
+\section{Internationalisation}
+\textbf{Défi:} Mettre en place un système d'internationalisation qui fonctionne de manière cohérente sur toutes les pages.
+
+\textbf{Solution:} Configuration d'un MessageSource pour gérer les fichiers de messages dans différentes langues. Utilisation de cookies pour persister la préférence de langue de l'utilisateur. Mise en place de balises Thymeleaf th:text pour tous les textes statiques.
+
+\section{Gestion du Panier}
+\textbf{Défi:} Concevoir un système de panier qui persiste entre les sessions et gère correctement les quantités.
+
+\textbf{Solution:} Implémentation d'un service CartService qui stocke les articles du panier en session. Création d'une interface utilisateur intuitive pour modifier les quantités et supprimer des articles.
+
+\section{Design Responsive}
+\textbf{Défi:} Créer une interface utilisateur qui s'adapte à tous les appareils tout en restant esthétique et fonctionnelle.
+
+\textbf{Solution:} Utilisation de Bootstrap 5 avec des classes responsives. Création d'un fichier CSS personnalisé avec des variables pour maintenir une cohérence visuelle. Test sur différentes tailles d'écran pour assurer une bonne expérience sur tous les appareils.
+
+% Améliorations Futures
+\chapter{Améliorations Futures}
+
+Bien que l'application soit fonctionnelle, plusieurs améliorations pourraient être apportées dans le futur:
+
+\section{Fonctionnalités Additionnelles}
+\begin{itemize}
+    \item Système de notation et d'avis pour les livres
+    \item Recommandations personnalisées basées sur l'historique d'achat
+    \item Catégorisation des livres et filtrage avancé
+    \item Gestion des stocks et notification de disponibilité
+    \item Intégration d'un système de paiement en ligne
+    \item Gestion des adresses de livraison
+    \item Suivi des commandes en temps réel
+\end{itemize}
+
+\section{Améliorations Techniques}
+\begin{itemize}
+    \item Migration vers une base de données persistante (MySQL, PostgreSQL)
+    \item Mise en place de tests unitaires et d'intégration
+    \item Optimisation des performances (mise en cache, lazy loading)
+    \item Implémentation d'une API RESTful pour permettre le développement d'applications mobiles
+    \item Déploiement sur un serveur de production avec CI/CD
+    \item Mise en place d'un système de logging avancé
+    \item Amélioration de la sécurité (HTTPS, protection contre les attaques CSRF, XSS, etc.)
+\end{itemize}
+
+% Conclusion
+\chapter{Conclusion}
+
+Ce projet de mini librairie en ligne a permis de mettre en pratique de nombreux concepts du développement web moderne avec Java Spring Boot. L'application répond aux objectifs initiaux en offrant une expérience utilisateur complète pour la navigation, la recherche et l'achat de livres.
+
+Les principales réalisations incluent:
+\begin{itemize}
+    \item Une architecture MVC bien structurée et maintenable
+    \item Un système d'authentification sécurisé
+    \item Une interface utilisateur intuitive et responsive
+    \item Un support multilingue avec internationalisation
+    \item Une gestion complète du cycle d'achat (catalogue, panier, commande)
+\end{itemize}
+
+Les défis rencontrés ont été surmontés grâce à l'utilisation des bonnes pratiques de développement et des fonctionnalités offertes par Spring Boot et ses modules associés. Les améliorations futures identifiées permettront d'enrichir l'application et d'offrir une expérience encore plus complète aux utilisateurs.
+
+Ce projet constitue une base solide qui pourrait être étendue pour devenir une plateforme de commerce électronique complète pour la vente de livres en ligne.
+
+% Annexes
+\chapter{Annexes}
+
+\section{Guide d'Installation}
+
+\begin{enumerate}
+    \item Prérequis:
+    \begin{itemize}
+        \item Java 11 ou supérieur
+        \item Maven 3.6 ou supérieur
+        \item Git (optionnel)
+    \end{itemize}
+    
+    \item Cloner le dépôt (ou télécharger l'archive):
+    \begin{verbatim}
+    git clone https://github.com/votre-compte/mini-bookstore.git
+    cd mini-bookstore
+    \end{verbatim}
+    
+    \item Compiler et exécuter l'application:
+    \begin{verbatim}
+    mvn clean install
+    mvn spring-boot:run
+    \end{verbatim}
+    
+    \item Accéder à l'application dans un navigateur:
+    \begin{verbatim}
+    http://localhost:8080
+    \end{verbatim}
+\end{enumerate}
+
+\section{Glossaire}
+
+\begin{description}
+    \item[Spring Boot] Framework Java qui simplifie le développement d'applications en fournissant des configurations par défaut et des outils de démarrage rapide.
+    \item[MVC] Modèle-Vue-Contrôleur, un modèle d'architecture logicielle qui sépare la logique métier, l'interface utilisateur et le contrôle du flux de l'application.
+    \item[JPA] Java Persistence API, une spécification Java pour la gestion de la persistance des données relationnelles.
+    \item[Thymeleaf] Moteur de template Java qui permet de créer des vues HTML dynamiques pour les applications web.
+    \item[Bootstrap] Framework CSS pour le développement d'interfaces web responsives et mobiles-first.
+    \item[Internationalisation (i18n)] Processus de conception d'une application pour qu'elle puisse être adaptée à différentes langues et régions sans modifications techniques.
+    \item[BCrypt] Fonction de hachage de mot de passe conçue pour être lente et résistante aux attaques par force brute.
+\end{description}
+
+\section{Références}
+
+\begin{enumerate}
+    \item Spring Boot Documentation - \url{https://docs.spring.io/spring-boot/docs/current/reference/html/}
+    \item Spring Security Documentation - \url{https://docs.spring.io/spring-security/reference/}
+    \item Thymeleaf Documentation - \url{https://www.thymeleaf.org/documentation.html}
+    \item Bootstrap Documentation - \url{https://getbootstrap.com/docs/5.0/getting-started/introduction/}
+    \item Java 11 Documentation - \url{https://docs.oracle.com/en/java/javase/11/}
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="fragments/header :: head"></th:block>
+</head>
+<body>
+    <div th:replace="fragments/header :: header"></div>
+    
+    <div class="container py-5">
+        <h1 class="mb-4" th:text="#{order.details}">Order Details</h1>
+        
+        <div class="card mb-4">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-6">
+                        <span th:text="#{order.id}">Order Number</span>: 
+                        <strong th:text="${order.id}">12345</strong>
+                    </div>
+                    <div class="col-md-6">
+                        <span th:text="#{order.date}">Order Date</span>: 
+                        <span th:text="${#temporals.format(order.orderDate, 'dd/MM/yyyy HH:mm')}">01/01/2025 12:34</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <h5 th:text="#{order.items}">Ordered Items</h5>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th th:text="#{cart.book}">Book</th>
+                                <th th:text="#{cart.price}">Price</th>
+                                <th th:text="#{cart.quantity}">Quantity</th>
+                                <th th:text="#{cart.subtotal}">Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="item : ${order.orderItems}">
+                                <td>
+                                    <div th:text="${item.book.title}">Book Title</div>
+                                    <small class="text-muted" th:text="${item.book.author}">Author Name</small>
+                                </td>
+                                <td th:text="${#numbers.formatCurrency(item.price)}">$10.99</td>
+                                <td th:text="${item.quantity}">2</td>
+                                <td th:text="${#numbers.formatCurrency(item.subtotal)}">$21.98</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3" class="text-end fw-bold" th:text="#{order.total}">Total Amount:</td>
+                                <td th:text="${#numbers.formatCurrency(order.totalAmount)}" class="fw-bold">$43.96</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                
+                <div class="mt-4">
+                    <a th:href="@{/orders}" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left"></i> <span th:text="#{orders.title}">My Orders</span>
+                    </a>
+                    <a th:href="@{/books}" class="btn btn-primary" th:text="#{cart.continue}">Continue Shopping</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>
